@@ -1,5 +1,6 @@
 import pandas as pd
-# import os
+import numpy as np
+import os
 import glob
 from sklearn.feature_selection import RFE
 from sklearn.svm import SVR
@@ -8,8 +9,8 @@ from sklearn.svm import SVR
 bigmatrices_directory =  '../../created/big_matrices/'
 all_dir = glob.glob(bigmatrices_directory+ "*.csv" )
 
-saving_directory_selected_pathways = '../FS_Selected/'
-saving_directory_ranked_pathways = '../FS_Ranked/'
+saving_directory_selected_pathways = '../../created/pathway_selection/selected/'
+saving_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
 
 
 
@@ -17,24 +18,20 @@ def call_SVM():
 
 
 
-    list_selected = []
-    list_ranked = []
-    list_measures = []
     # Perform the process for every interaction index.
-    for file_path in all_dir:
+    for file_path in sorted(all_dir):
+ 
         df_Xy = pd.read_csv(file_path, index_col=0)
         df_Xy = df_Xy.fillna(0)
-        name_measure = file_path[27:-4] # CHANGE!!!
-        list_measures.append(name_measure)
-        print(name_measure)
+        name_measure = file_path[len(bigmatrices_directory):-4] 
+
         # Get X (matrix with data) and y (column with labels).
-        df_X = df_Xy.iloc[:,[0,2,3,4,5,6,7]] # CHANGE!!!
-        df_y = df_Xy.iloc[:, 1]
+        df_X = df_Xy.loc[:, df_Xy.columns != 'y']
+        df_y = df_Xy['y']
 
-        # Perform SVM (Support Vector Machine sup.learning).
+
+        # Perform SVM and RFE (Recursive Feature Elimination)
         estimator = SVR(kernel="linear")
-
-        # Perform RFE (Recursive Feature Elimination).
         selector = RFE(estimator, step=1)
         
         try:
@@ -43,27 +40,42 @@ def call_SVM():
             print('Error in ' + file_path)
             continue
 
-        # Get Selected pathways (using default parameters).
-        selected_feat = df_X.columns[selector.support_==True].tolist()
-        list_selected.append(selected_feat)
 
-        # Get Ranked pathways.
-        ranked_feat = selector.ranking_
-        df_selectFeat = pd.DataFrame()
-        df_selectFeat['pathways'] = df_X.columns.tolist()
-        df_selectFeat['ranks'] = ranked_feat
-        df_selectFeat = df_selectFeat.sort_values(by='ranks')
-        list_ranked.append(df_selectFeat.pathways)
-        # list_ranked.append('\n\n')
+        # Get Ranked+Selected pathways into DataFrames
+        if 'df_ranked_SVM' in locals():
+            df_ranked_temp = pd.DataFrame({
+                'pathways': df_X.columns.tolist(),
+                name_measure: selector.ranking_})
+            df_ranked_SVM = pd.merge(df_ranked_SVM, df_ranked_temp, how="outer", on="pathways")
 
 
-        print(df_selectFeat)
-        exit()
+            df_selected_SVM = pd.concat([
+                df_selected_SVM,
+                pd.DataFrame({name_measure: df_X.columns[selector.support_==True]})],
+                axis=1)
 
-        # Save the results for all the interaction indexes together.
-        # with open(saving_directory_selected_pathways+'SelFeat_'
-        #                     +labeling+'_SVM.txt', 'w') as file_:
-        #     file_.write(str(list_measures) + '\n\n' + str(list_selected))
-        # with open(saving_directory_ranked_pathways+'RankFeat_'
-        #                     +labeling+'_SVM.txt', 'w') as file_:
-        #     file_.write(str(list_measures) + '\n\n' + str(list_ranked))
+        else:
+            df_ranked_SVM = pd.DataFrame({
+                'pathways': df_X.columns.tolist(),
+                name_measure: selector.ranking_})
+
+            df_selected_SVM = pd.DataFrame({
+                name_measure: df_X.columns[selector.support_==True]})
+
+  
+    # Save
+    df_ranked_SVM = df_ranked_SVM.sort_values(by=df_ranked_SVM.columns[1])
+    df_selected_SVM = pd.DataFrame(
+        np.sort(df_selected_SVM.values, axis=0),
+        index=df_selected_SVM.index, columns=df_selected_SVM.columns)
+
+
+    if not os.path.exists(saving_directory_ranked_pathways):
+        os.makedirs(saving_directory_ranked_pathways)
+    if not os.path.exists(saving_directory_selected_pathways):
+        os.makedirs(saving_directory_selected_pathways)
+
+    df_ranked_SVM.to_csv(saving_directory_ranked_pathways+'ranked_SVM.csv',
+                            header=True, index=False)
+    df_selected_SVM.to_csv(saving_directory_selected_pathways+'selected_SVM.csv',
+                            header=True, index=False)
