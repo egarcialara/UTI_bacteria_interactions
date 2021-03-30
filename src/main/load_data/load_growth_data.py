@@ -42,6 +42,7 @@ def mat_to_pandas():
         df = np.log(df)
 
         mat_name_short = mat_name[len(growth_matrices_directory):-4]
+        if not os.path.exists(saving_dir): os.makedirs(saving_dir)
         df.to_csv(saving_dir+mat_name_short+".csv",header=True, index=True)
 
 def give_names(df):

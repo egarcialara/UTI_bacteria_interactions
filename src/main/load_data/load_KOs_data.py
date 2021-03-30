@@ -51,4 +51,6 @@ def create_KOs_binary_matrix():
         # Save matrix
         df_kos_binary = df_kos_binary_temp.set_index("ko").transpose()
         pwname_save = pwname.replace("/", "-")
+
+        if not os.path.exists(saving_dir): os.makedirs(saving_dir)
         df_kos_binary.to_csv(saving_dir+pwname_save+".csv", header=True, index=True)
