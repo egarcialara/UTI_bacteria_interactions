@@ -20,17 +20,17 @@ def call_WMW():
 
         df_Xy = pd.read_csv(file_path, index_col=0)
         df_Xy = df_Xy.fillna(0)
-        name_measure = file_path[len(bigmatrices_directory):-4] 
+        name_measure = file_path[len(bigmatrices_directory):-4]
 
         # Get X (matrix with data) and y (column with labels).
         df_X = df_Xy.loc[:, df_Xy.columns != 'y']
 
         # Perform the MWU test per column
-        results = df_X.apply(lambda d: mannwhitneyu(d[df_Xy.y==0], d[df_Xy.y==1]), axis=0)
+        results = df_X.apply(lambda d: mannwhitneyu(d[df_Xy.y == 0], d[df_Xy.y == 1]), axis=0)
         df_temp = pd.DataFrame({
             'pathways': df_X.columns.tolist(),
-            'pvalues': [x[1] for x in results.values]})
-        df_temp = df_temp.sort_values(by = 'pvalues')
+            'pvalues': [x for x in results.values[1]]})
+        df_temp = df_temp.sort_values(by='pvalues')
         df_temp = df_temp.reset_index(drop=True)
         df_temp['rank'] = np.arange(1, len(df_temp) + 1)
  

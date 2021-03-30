@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 import glob
 from sklearn.ensemble import RandomForestClassifier
@@ -26,11 +25,9 @@ def call_Boruta():
         df_X = df_Xy.loc[:, df_Xy.columns != 'y']
         df_y = df_Xy['y']
 
-
         # define RF classifier + Boruta FS
         rf = RandomForestClassifier(n_jobs=-1, class_weight='balanced', max_depth=5)
         selector = BorutaPy(rf, n_estimators='auto', verbose=0, random_state=1)
-        
 
         try:
             selector.fit(df_X.values, df_y.values)

@@ -10,7 +10,7 @@ all_dir = glob.glob(source_directory_ranked_pathways+ "*.csv" )
 saving_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
 saving_directory_selected_pathways = '../../created/pathway_selection/selected/'
 
-
+all_dir.remove(source_directory_ranked_pathways+'ranked_ensemble.csv') #just in case
 
 def call_ensemble():
 
@@ -30,13 +30,12 @@ def call_ensemble():
             df_temp = pd.concat([df_temp], keys=[name_selection], names=['Firstlevel'])
             df_ranked_emsemble = pd.concat([df_ranked_emsemble, df_temp])
 
-
         else:
             df_ranked_emsemble = pd.concat([df_temp], keys=[name_selection], names=['Firstlevel'])
             first=False
 
 
-    # merge
+    # Merge
     df_ranked_emsemble = df_ranked_emsemble.groupby(level=1).sum()
 
     # Save
@@ -45,15 +44,12 @@ def call_ensemble():
         np.sort(df_ranked_emsemble.values, axis=0),
         index=df_ranked_emsemble.index, columns=df_ranked_emsemble.columns)
 
-    print(df_selected_emsemble)
-    exit()
-
     if not os.path.exists(saving_directory_ranked_pathways):
         os.makedirs(saving_directory_ranked_pathways)
     if not os.path.exists(saving_directory_selected_pathways):
         os.makedirs(saving_directory_selected_pathways)
 
     df_ranked_emsemble.to_csv(saving_directory_ranked_pathways+'ranked_ensemble.csv',
-                            header=True, index=False)
+                            header=True, index=True)
     df_selected_emsemble.to_csv(saving_directory_selected_pathways+'selected_ensemble.csv',
-                            header=True, index=False)
+                            header=True, index=True)

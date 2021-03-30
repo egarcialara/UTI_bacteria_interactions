@@ -16,8 +16,6 @@ saving_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
 
 def call_SVM():
 
-
-
     # Perform the process for every interaction index.
     for file_path in sorted(all_dir):
  

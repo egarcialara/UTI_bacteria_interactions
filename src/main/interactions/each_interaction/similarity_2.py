@@ -1,7 +1,7 @@
-
 import glob
 import pandas as pd
 import numpy as np
+import os
 
 files_dir = "../../created/KO_binary_matrices"
 files_binary = glob.glob(files_dir+"/*.csv")
@@ -23,7 +23,6 @@ def create_similarity_2():
         df_interaction = pd.DataFrame(np.nan, index=KO_binary_matrix.index, 
                                               columns=KO_binary_matrix.index)
 
-        ## TODO make it in one line / lambda type
         # Aggregate the binary table into a set of KOs per row (i.e. per strain)
         df_KOs = KO_binary_matrix.copy()
         for col in df_KOs.columns.tolist():
@@ -46,5 +45,6 @@ def create_similarity_2():
         df_interaction = df_interaction / KO_binary_matrix.shape[1]
  
         # Save table
+        if not os.path.exists(saving_dir): os.makedirs(saving_dir)
         name_pw = f[(len(files_dir)+1):-4]
         df_interaction.to_csv(saving_dir + "/"+name_pw+".csv", header=True, index=True)

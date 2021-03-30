@@ -11,7 +11,7 @@ def get_list_ko(line):
         return ["None"], "None"
 
     pwid = pwid[8:]
-    ko = 'ko' + pwid
+    # ko = 'ko' + pwid
     url = str("http://rest.kegg.jp/link/ko/map" + pwid)
     try:
         data = urlopen(url, timeout=20).read()
