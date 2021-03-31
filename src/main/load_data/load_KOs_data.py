@@ -6,7 +6,7 @@ from load_data.util.KEGG_pathways import get_list_ko
 from load_data.util.create_KO_matrices import create_binary_matrix
 
 KO_lists_directory = "../../data/KO_lists/"
-all_dir = glob.glob(KO_lists_directory + "*_KO.txt")
+all_dir = glob.glob(KO_lists_directory + "*.txt")
 len_dir_name = len(KO_lists_directory)
 
 saving_dir = "../../created/KO_binary_matrices/"
