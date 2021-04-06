@@ -18,7 +18,7 @@ that will contain the resulting tables (`created`) and figures (`figures`).
 
 ### How to run it
 
-To run the pipeline, call `src/main/main.py`.
+__To run the pipeline__, call `src/main/main.py`.
 It calls several functions, that can be commented out if needed:
     
 - `create_KOs_binary_matrix`: from files derived from e.g. BLASTKoala, it creates clean binary tables for each strain.
@@ -30,7 +30,7 @@ and all pathways in the Y-axis. The cells contain the relevant interaction value
 - `call_selections`: calls the pathway selection methods. Again, if you feel that
     a different selection strategy would improve your results, it is easy to remove/add a new method.
 
-To create the figures, call the different scripts in `src/visualization/`.
+__To create the figures__, call the different scripts in `src/visualization/`.
 Before running most of them, make sure that you have the required tables derived from running certain 
 steps from the main pipeline.
 
