@@ -1,0 +1,8 @@
+numpy==1.20.2
+pandas==1.2.3
+seaborn==0.11.1
+matplotlib==3.4.1
+scipy==1.6.2
+scikit-learn==0.24.1
+boruta==0.3
+xlrd==2.0.1
