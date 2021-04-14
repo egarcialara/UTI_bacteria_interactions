@@ -8,11 +8,7 @@ library(ComplexHeatmap)
 library(ClassDiscovery)
 library(dplyr)
 library(tibble)
-# library(wesanderson)
 library("RColorBrewer")
-
-# library(shuffle)
-# library(ggplot2)
 library(tidyr)
 library(stringr)
 
