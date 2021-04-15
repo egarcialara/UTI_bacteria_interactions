@@ -6,35 +6,66 @@
 # libraries
 library(ggplot2)
 library(RColorBrewer)
+library(readxl)
+library(dplyr)
+library(tidyverse)
 
-# directories
-source_dir = ""
+
+# Get data
+source_dir = paste(getwd(), "/extra/excel_UTI_strains/", sep="")
+source_file <- paste(source_dir, "List_bacteria_UTI.xls", sep="")
+saving_dir <- "~/Documents/GitHub/UTI_bacteria_interactions/figures/exploratory/"
+saving_file <- paste(saving_dir, "genes_vs_KO_annotations", sep="")
+saving_format = ".pdf"
+
+df <- read_excel(source_dir,
+                 range=cell_cols(c("C", "K", "L")),
+                 col_names = TRUE) %>%
+  select(Group, "# entries annotated by KO terms", "% entries annotated by KO terms") %>%
+  rename(
+    n_annotations = `# entries annotated by KO terms`,
+    perc_annotations = `% entries annotated by KO terms`
+  )
+
+# Group values (mean and st. dev)
+df_summary <- df %>%
+  drop_na(n_annotations) %>%
+  dplyr::group_by(Group) %>%
+  dplyr::summarize(
+    perc_annotations_mean = mean(perc_annotations),
+    perc_annotations_sd = sd(perc_annotations),
+    n_genes_mean = mean(n_annotations),
+    n_genes_sd = sd(n_annotations)
+  )
 
 
-# group
+# Plot (part 1)
+col <- c(RColorBrewer::brewer.pal(n = 7, name = "Dark2"))
 
-mock_annotations_perc <- c(45, 23, 56, 45, 34, 56)
-mock_genes_absolute <- c(234, 645, 234, 345, 237, 532)
 
-sd_annotations_perc <- c(34, 23, 45, 65, 23, 54)/10
-sd_genes_absolute <- c(35, 54, 43, 76, 34, 62)/10
+# Save (part1)
+dir.create(file.path(saving_dir), showWarnings = FALSE)
+pdf(paste(saving_file, saving_format, sep="")) 
 
-df <- data.frame("x" = mock_annotations_perc, "y" = mock_genes_absolute,
-                 "groups" = c("KECS", "Ecoli", "St", "Ps", "Ent", "Pm"))
 
-col <- c(RColorBrewer::brewer.pal(n = 7, name = "Dark2"))[-7]
-
-# plot
-ggplot(df)+
-  geom_errorbar(aes(x=x, y=y, ymin=y-sd_annotations_perc/2, ymax=y+sd_annotations_perc/2,
-                    ), colour="blue", width=1)+
-  geom_errorbar(aes(x=x, y=y, 
-                    xmin=x-sd_genes_absolute, xmax=x+sd_genes_absolute
-  ), colour="red", width=2)+
-  geom_point(aes(x, y, colour=groups), size=3)+
+# Plot (part 2)
+ggplot(df_summary)+
+  geom_errorbar(aes(x=perc_annotations_mean, y=n_genes_mean, 
+                    ymin=n_genes_mean-n_genes_sd,
+                    ymax=n_genes_mean+n_genes_sd,
+                    colour=Group
+                    ), width=1)+
+  geom_errorbarh(aes(x=perc_annotations_mean, y=n_genes_mean,
+                    xmin=perc_annotations_mean-perc_annotations_sd,
+                    xmax=perc_annotations_mean+perc_annotations_sd,
+                    colour=Group
+                    ), width=1)+
+  geom_point(aes(perc_annotations_mean, n_genes_mean, colour=Group), size=3)+
   theme_classic()+
   labs(x="Annotation ratio", y="Absolute number of genes")+
-  scale_fill_manual(values=col)+
-  theme(legend.position = "none") 
-  
-plot(x=mock_annotations_perc, y=mock_genes_absolute)
+  scale_colour_manual(values=col)+
+  theme(legend.position = "none") +
+  lims(x=c(0,100)) + expand_limits(y=0)  
+
+# Save (part 2)
+dev.off() 
