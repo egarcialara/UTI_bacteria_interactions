@@ -51,7 +51,7 @@ get_growth_arrays <- function(){
 
 
 
-plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, rows=NULL){
+plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, legend=FALSE, rows=NULL){
   
   # Read files
   df <- read.csv(file, header=TRUE, row.names=rows)
@@ -86,7 +86,7 @@ plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, ro
     filter(Groups!="MM")%>%
     pivot_longer(c(Ecoli, Ent, KECS, Pm, Ps, St)) %>%
     rename(
-      Donor = Groups, # check order is right!
+      Donor = Groups,
       Acceptor = name,
       complementarity_3 = value
     ) %>%
@@ -99,6 +99,15 @@ plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, ro
     minx=0
     maxx=1
   }
+  
+  # (add legend or not)
+  if(legend==FALSE){
+    fig_decoration <- theme(legend.position = "none")
+  }else{
+    fig_decoration <- theme(legend.box='horizontal')
+  }
+  
+  # Plot
   p <- df3 %>%
     ggplot(aes(x=as.double(complementarity_3), y=growth,
                colour = Donor,
@@ -108,7 +117,8 @@ plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, ro
     scale_colour_manual(values=col)+
     labs(x=name_index, y=name_growth,
     title=name_title)+
-    lims(x=c(minx,maxx), y=c(-1,1))
+    lims(x=c(minx,maxx), y=c(-1,1)) +
+    fig_decoration
   
   return(p)
     

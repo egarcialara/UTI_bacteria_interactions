@@ -8,53 +8,48 @@ growth_rate_file <- paste(growth_dir, "GR_3.csv", sep="")
 growth_yield_file <- paste(growth_dir, "MaxOD_3.csv", sep="")
 col <- c(RColorBrewer::brewer.pal(n = 7, name = "Dark2"))
 
+
 # Growth
 list_growth <- get_growth_arrays()
 
 # Indeces
-# source_files = list.files(source_dir, pattern=".csv$")
+# (1 - folate biosynthesis)
 file = paste(index_dir, "Folate biosynthesis.csv",sep="")
 p_compl3_folate_yield <- plot_vs_growth(file, list_growth$yield$value, 
                                         "Complementarity 3", "Growth (Max OD)", 
-                                        "",
-                                        1)
-p_compl3_folate_rate <- plot_vs_growth(file, list_growth$rate$value, 
-                                       "Complementarity 3", "Growth (GR)", 
-                                       "",
-                                       1)
+                                        "", rows=1)
 
-# RevEcoR Complementarity
-file = paste(other_dir, "revecor_compl_csv.csv",sep="")
-p_Rev_compl_yield <- plot_vs_growth(file, list_growth$yield$value,
-                                    "Complementarity index", "Growth (Max OD)", 
-                                    "RevEcoR")
-p_Rev_compl_rate <- plot_vs_growth(file, list_growth$rate$value,
-                                   "Complementarity index", "Growth (GR)", 
-                                   "RevEcoR")
-
-# RevEcoR Competition
-file = paste(other_dir, "revecor_compet_csv.csv",sep="")
-p_Rev_compet_yield <- plot_vs_growth(file, list_growth$yield$value,
-                                     "Competition index", "Growth (Max OD)", 
-                                     "RevEcoR")
-p_Rev_compet_rate <- plot_vs_growth(file, list_growth$rate$value,
-                                    "Competition index", "Growth (GR)", 
-                                    "RevEcoR")
+# (2- histidine metabolism)
+file = paste(index_dir, "Histidine metabolism.csv",sep="")
+p_compl3_hist_yield <- plot_vs_growth(file, list_growth$yield$value, 
+                                        "Complementarity 3", "Growth (Max OD)", 
+                                        "", rows=1)
 
 
-# NetCooperate BSS
-file = paste(other_dir, "df_BSS_2.csv",sep="")
-p_BSS_yield <- plot_vs_growth(file, list_growth$yield$value,
-                              "NetCooperate BSS", "Growth (Max OD)", 
-                              "NetCooperate")
-p_BSS_rate <- plot_vs_growth(file, list_growth$rate$value,
-                             "NetCooperate BSS", "Growth (GR)", 
-                             "NetCooperate")
-
-
+# Legend
+p_legend <- plot_vs_growth(file, list_growth$rate$value,
+                     "", "", "", legend=TRUE, rows=1)
 
 ## PUT IT ALL TOGETHER
-plot_grid(p_Rev_compl_rate, p_Rev_compet_rate, p_BSS_rate, p_compl3_folate_rate,
-          p_Rev_compl_yield, p_Rev_compet_yield, p_BSS_yield, p_compl3_folate_yield,
-          labels = c("A", "B", "C", "D", "E", "F", "G", "H"),
-          ncol = 4, nrow = 2)
+legend <- get_legend(
+  # create some space to the left of the legend
+  p_legend + theme(legend.box.margin = margin(0, 0, 0, 12))
+)
+
+
+prow <- plot_grid(p_compl3_folate_yield + theme(axis.text.x = element_blank(),
+                                                 axis.ticks.x = element_blank(),
+                                                 axis.title.x = element_blank() ),
+                  p_compl3_hist_yield + theme(axis.text.y = element_blank(),
+                                                 axis.ticks.y = element_blank(),
+                                                 axis.title.y = element_blank() ,
+                                                axis.text.x = element_blank(),
+                                                axis.ticks.x = element_blank(),
+                                                axis.title.x = element_blank() ), 
+                  p_compl3_folate_yield, 
+                  p_compl3_folate_yield+ theme(axis.text.y = element_blank(),
+                                               axis.ticks.y = element_blank(),
+                                               axis.title.y = element_blank() ),
+                  labels = c("A", "B", "C", "D", "E", "F", "G", "H"),
+                  ncol = 2, nrow = 2)
+plot_grid(prow, legend, rel_widths = c(3, 1))
