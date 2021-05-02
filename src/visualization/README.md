@@ -1,13 +1,10 @@
 # Creating the figures
 
-_Note: this text is a draft. Any edits/feedback is welcome._
-
-
 
 ### How to run it
 
 The working directory is the main folder, e.g. "/home/Projects/UTI_bacteria_interactions/".
-The default saving directory is "<working_directory>/figures/".
+The default saving directory is `<working_directory>/figures/`.
 
 __Fig. 1__
 
@@ -15,21 +12,26 @@ Combination of three figures: heatmap of the binary KO matrix,
 a scatter plot of the annotated genes by KEGG, and
 a scatter plot with an overview of the correlation between an interaction index and growth.
 
-- How to: run the scripts `fig1a.R`, `fig1b.R` and `fig1c.R` to create the individual figures.
-- Then: run `fig1.R` to merge the 3 figures and the legend.
+- How to: Have the scripts `fig1a.R`, `fig1b.R` and `fig1c.R` in the same folder.
+- Then: run `fig1.R`. It reads the aforementioned scripts with `source()`, and creates a separate legend.
 
 __Fig. 2__
 
-Heatmaps for the interaction indeces.
+Heatmaps for the interaction indexes.
 
-- How to: First, run the script `main.py` to create the interaction indeces for modules and all KOs.
+- How to: First, run the script `/util/fig2/main.py` to create the interaction indexes for 
+the pathways wanted. In this case: a module and all KOs. If you want to add 
+more tables in the figure that are already created (e.g. pathways),
+make sure to add their directory in `fig2.R`.
+- Make sure that the script `fig2_function.R` is in the same folder.
 - Then: run `fig2.R` to create the actual figures.
 
 __Fig. 3__
 
 Scatter plots for an interaction index and a growth measure.
 
-- How to: run `fig3.R`. It has `fig3_function.R` as source for the main functions.
+- How to: Make sure `p_compl3_hist_yield` is in the same folder.
+- Then: run `fig3.R`. Edit file names and directories as needed.
 
 ### Requirements
 Common R packages only. The list of packages used are listed at the top of each script.
