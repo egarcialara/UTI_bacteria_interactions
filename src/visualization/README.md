@@ -30,7 +30,7 @@ __Fig. 3__
 
 Scatter plots for an interaction index and a growth measure.
 
-- How to: Make sure `p_compl3_hist_yield` is in the same folder.
+- How to: Make sure `fig3_function.R` is in the same folder.
 - Then: run `fig3.R`. Edit file names and directories as needed.
 
 ### Requirements
