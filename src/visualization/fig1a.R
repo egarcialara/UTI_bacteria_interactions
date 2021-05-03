@@ -54,7 +54,7 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
   hh <- Heatmap(as.matrix(df3), name = "mat", 
           # right_annotation = ha, # !!! un-comment if annotations are added!!!
           row_split = df2$Name,
-          row_order = rev(unlist(order_rows)),
+          row_order = unlist(order_rows),
           column_order = order_cols,
           show_row_names = FALSE, show_column_names = FALSE,
           show_row_dend = FALSE, show_column_dend = FALSE,
