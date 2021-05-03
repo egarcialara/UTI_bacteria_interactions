@@ -67,8 +67,8 @@ make_fig2 <- function(file, source_dir, title){
   # Annotations of groups
   add_annotations_fig2 <- function(){
     col2 <- c(brewer.pal(n = 6, name = "Dark2")) # remove white
-    col2 = col2[c(6,1,5,4,3,2)]
-    col3 = rev(col2)
+    col2 = rev(col2)
+    col3 = rev(col2) # i know i know
     for(i in 1:6) {
       # (rows)
       decorate_annotation("foo", slice = i, {
