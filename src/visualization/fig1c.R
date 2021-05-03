@@ -80,11 +80,11 @@ make_fig1c <- function(growth_rate_file, growth_yield_file, legend){
       v <- unlist(df3[names_sel])
       v_rate <- unlist(df_rate3[names_sel])
       v_yield <- unlist(df_yield3[names_sel])
-      cor_rate <- cor.test(v, v_rate, method="spearman")
-      cor_yield <- cor.test(v, v_yield, method="spearman")
-      list_cor_rate <- c(list_cor_rate, cor(v, v_rate, method="spearman"))
+      cor_rate <- cor.test(v, v_rate, method="pearson")
+      cor_yield <- cor.test(v, v_yield, method="pearson")
+      list_cor_rate <- c(list_cor_rate, cor(v, v_rate, method="pearson"))
       list_cor_rate_p <- c(list_cor_rate_p, cor_rate$p.value)
-      list_cor_yield <- c(list_cor_yield, cor(v, v_yield, method="spearman"))
+      list_cor_yield <- c(list_cor_yield, cor(v, v_yield, method="pearson"))
       list_cor_yield_p <- c(list_cor_yield_p, cor_yield$p.value)
   }
   
