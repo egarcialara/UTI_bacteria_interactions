@@ -37,7 +37,8 @@ make_fig2 <- function(file, source_dir, title){
     text4="Ps", text5="St", text6="Ent")
   ha = rowAnnotation(
     foo = anno_empty(border = FALSE, 
-                     width = max_text_width(unlist(text_list)) + unit(3, "mm")))
+                     width = max_text_width(unlist(text_list))
+                     - unit(1, "mm")))
   
   # (columns)
   text_list_2 = list(
@@ -45,7 +46,9 @@ make_fig2 <- function(file, source_dir, title){
     text4="Pm", text5="KECS", text6="Ecoli")
   ha2 = columnAnnotation(
     foo2 = anno_empty(border = FALSE, 
-                     width = max_text_width(unlist(text_list_2)) + unit(3, "mm"))) 
+                     height = max_text_height(unlist(text_list_2)) 
+                     + unit(2.5, "mm")
+                     )) 
   
   # Plot
   hh <- Heatmap(as.matrix(df),
@@ -81,11 +84,11 @@ make_fig2 <- function(file, source_dir, title){
       })
       # (columns)
       decorate_annotation("foo2", slice = i, {
-        grid.rect(x = 0, y=1, height = unit(1.5, "mm"), 
+        grid.rect(x = 0, y=0.8, height = unit(1.5, "mm"), 
                   gp = gpar(fill = col3[i], col = NA),
                   just = "left")
         grid.text(paste(text_list_2[[i]]), 
-                  y = unit(5, "mm"), just = "centre",
+                  y = 0, just = "centre",
                   gp=gpar(fontsize=9))
       })
       }

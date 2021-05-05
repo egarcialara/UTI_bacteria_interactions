@@ -47,12 +47,14 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
   ha = rowAnnotation(
     empty = anno_empty(border=FALSE),
     foo = anno_empty(border = FALSE, 
-          width = max_text_width(unlist(text_list)) + unit(4, "mm")))
+          width = max_text_width(unlist(text_list)) 
+         - unit(5, "mm")
+    ))
 
   
   # Heatmap
   hh <- Heatmap(as.matrix(df3), name = "mat", 
-          # right_annotation = ha, # !!! un-comment if annotations are added!!!
+          right_annotation = ha, # !!! un-comment if annotations are added!!!
           row_split = df2$Name,
           row_order = unlist(order_rows),
           column_order = order_cols,
@@ -63,8 +65,8 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
           column_title_side='bottom',
           row_title="Strains",
           show_heatmap_legend=FALSE,
-          column_title_gp = gpar(fontsize = 11),
-          row_title_gp = gpar(fontsize = 11)
+          column_title_gp = gpar(fontsize = 15),
+          row_title_gp = gpar(fontsize = 1)
           )
   
   # Annotations (part 2, add to image created)
@@ -74,12 +76,12 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
   col2 = col2[c(6,1,5,4,3,2)]
   for(i in 1:6) {
     decorate_annotation("foo", slice = i, {
-      grid.rect(x = 0, width = unit(1, "mm"), 
+      grid.rect(x = -0.75, width = unit(1, "mm"), 
                 gp = gpar(fill = col2[i], col = NA),
                 just = "left")
       grid.text(paste(text_list[[i]], collapse = "\n"), 
-                x = unit(2, "mm"), just = "left",
-                gp=gpar(fontsize=9))
+                x = -0.4, just = "left",
+                gp=gpar(fontsize=10))
     })}
   }
   

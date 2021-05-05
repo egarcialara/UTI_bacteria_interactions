@@ -1,4 +1,5 @@
 source("src/visualization/fig3_function.R")
+library(ggplot2)
 
 # Global variables
 index_dir = paste(getwd(), "/created/interaction_matrices/complementarity_3/", sep="")
@@ -13,22 +14,34 @@ col <- c(RColorBrewer::brewer.pal(n = 7, name = "Dark2"))
 list_growth <- get_growth_arrays()
 
 # Indeces
-# (1 - folate biosynthesis)
-file = paste(index_dir, "Folate biosynthesis.csv",sep="")
-p_compl3_folate_yield <- plot_vs_growth(file, list_growth$yield$value, 
+# (1 - Glutathione metabolism)
+file = paste(index_dir, "Glutathione metabolism.csv",sep="")
+p1 <- plot_vs_growth(file, list_growth$yield$value, 
                                         "Complementarity 3", "Growth (Max OD)", 
-                                        "", rows=1)
+                                        "Glutathione metabolism", rows=1)
 
-# (2- histidine metabolism)
-file = paste(index_dir, "Histidine metabolism.csv",sep="")
-p_compl3_hist_yield <- plot_vs_growth(file, list_growth$yield$value, 
+# (2- Fatty acid metabolism)
+file = paste(index_dir, "Fatty acid metabolism.csv",sep="")
+p2 <- plot_vs_growth(file, list_growth$yield$value, 
                                         "Complementarity 3", "Growth (Max OD)", 
-                                        "", rows=1)
+                                        "Fatty acid metabolism", rows=1)
+
+file = paste(index_dir, "Folate biosynthesis.csv",sep="")
+p3 <- plot_vs_growth(file, list_growth$yield$value, 
+                                      "Complementarity 3", "Growth (Max OD)", 
+                                      "Folate biosynthesis", rows=1)
+
+file = paste(index_dir, "Histidine metabolism.csv",sep="")
+p4 <- plot_vs_growth(file, list_growth$yield$value, 
+                                      "Complementarity 3", "Growth (Max OD)", 
+                                      "Histidine metabolism", rows=1)
 
 
 # Legend
 p_legend <- plot_vs_growth(file, list_growth$rate$value,
-                     "", "", "", legend=TRUE, rows=1)
+                     "", "", "", legend=TRUE, rows=1)+
+  geom_point(shape=15, size=3)+
+  guides(shape = guide_legend(override.aes = list(size = 2)))
 
 ## PUT IT ALL TOGETHER
 legend <- get_legend(
@@ -37,19 +50,27 @@ legend <- get_legend(
 )
 
 
-prow <- plot_grid(p_compl3_folate_yield + theme(axis.text.x = element_blank(),
-                                                 axis.ticks.x = element_blank(),
-                                                 axis.title.x = element_blank() ),
-                  p_compl3_hist_yield + theme(axis.text.y = element_blank(),
-                                                 axis.ticks.y = element_blank(),
-                                                 axis.title.y = element_blank() ,
-                                                axis.text.x = element_blank(),
-                                                axis.ticks.x = element_blank(),
-                                                axis.title.x = element_blank() ), 
-                  p_compl3_folate_yield, 
-                  p_compl3_folate_yield+ theme(axis.text.y = element_blank(),
+# 9x7 *0.8 = 7.2x5.6
+prow <- plot_grid(
+  p1 + theme(#axis.text.x = element_blank(),
+                                                 # axis.ticks.x = element_blank(),
+                                   axis.title.x = element_blank() ,
+                                   plot.title = element_text(hjust = 0.5)),
+                  p2 + theme(axis.text.y = element_blank(),
+                               axis.ticks.y = element_blank(),
+                               axis.title.y = element_blank() ,
+                              # axis.text.x = element_blank(),
+                              # axis.ticks.x = element_blank(),
+                              axis.title.x = element_blank() ,
+                             plot.title = element_text(hjust = 0.5)), 
+                  p3 + theme(plot.title = element_text(hjust = 0.5)), 
+                  p4+ theme(axis.text.y = element_blank(),
                                                axis.ticks.y = element_blank(),
-                                               axis.title.y = element_blank() ),
-                  labels = c("A", "B", "C", "D", "E", "F", "G", "H"),
+                                               axis.title.y = element_blank() ,
+                                                # axis.ticks.y = element_blank(),
+                            plot.title = element_text(hjust = 0.5)),
+                  labels = c("A", "B", "C", "D"),#, "E", "F", "G", "H"),
                   ncol = 2, nrow = 2)
+
 plot_grid(prow, legend, rel_widths = c(3, 1))
+# save 

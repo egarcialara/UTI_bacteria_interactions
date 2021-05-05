@@ -113,7 +113,7 @@ plot_vs_growth <- function(file, growth, name_index, name_growth, name_title, le
                colour = Donor,
                shape=Acceptor))+
     geom_point()+
-    theme_classic()+
+    theme_minimal()+
     scale_colour_manual(values=col)+
     labs(x=name_index, y=name_growth,
     title=name_title)+

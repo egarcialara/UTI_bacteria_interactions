@@ -107,18 +107,20 @@ make_fig1c <- function(growth_rate_file, growth_yield_file, legend){
   # (plot)
   fig_1c <- df_plot %>%
     ggplot()+
-    geom_point(aes(x=values_rate, y=values_yield, colour=pval))+
+    geom_point(aes(x=values_rate, y=values_yield, colour=pval),size=1)+
     geom_abline(colour="gray", linetype = "dashed")+
     lims(x=c(-0.7, 0.7), y=c(-0.7, 0.7))+
     scale_colour_gradientn(colours=c("blue", "red"), breaks=c(0.05, 0.25,0.50,0.75),
-                           limits=c(0.05,max(df_plot$pval)), oob = scales::censor, na.value="darkblue")+
+                           limits=c(0.05,max(df_plot$pval)),
+                           oob = scales::censor, na.value="darkblue")+
     theme_minimal()+
-    labs(x="Correlation 'compl 3' vs growth rate",
-         y="Correlation 'compl 3' vs growth yield",
+    labs(x="Correlation 'compl 3'\nvs growth rate",
+         y="Correlation 'compl 3'\nvs growth yield",
          colour="Max pvalue")+
     fig_decoration
   
-  return(fig_1c)
+  list_return = list(plot=fig_1c, df_plot=df_plot)
+  return(list_return)
 }
 
 
