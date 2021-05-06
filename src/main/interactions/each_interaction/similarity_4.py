@@ -6,7 +6,7 @@ import os
 files_dir = "../../created/KO_binary_matrices"
 files_binary = glob.glob(files_dir+"/*.csv")
 saving_dir_general = "../../created/interaction_matrices"
-saving_dir = saving_dir_general + "/similarity_2"
+saving_dir = saving_dir_general + "/similarity_4"
 
 def create_similarity_4():
 
