@@ -16,23 +16,23 @@ list_growth <- get_growth_arrays()
 # Indeces
 # (1 - Glutathione metabolism)
 file = paste(index_dir, "Glutathione metabolism.csv",sep="")
-p1 <- plot_vs_growth(file, list_growth$yield$value, 
+fig3a <- plot_vs_growth(file, list_growth$yield$value, 
                                         "Complementarity 3", "Growth (Max OD)", 
                                         "Glutathione metabolism", rows=1)
 
 # (2- Fatty acid metabolism)
 file = paste(index_dir, "Fatty acid metabolism.csv",sep="")
-p2 <- plot_vs_growth(file, list_growth$yield$value, 
+fig3b <- plot_vs_growth(file, list_growth$yield$value, 
                                         "Complementarity 3", "Growth (Max OD)", 
                                         "Fatty acid metabolism", rows=1)
 
-file = paste(index_dir, "Folate biosynthesis.csv",sep="")
-p3 <- plot_vs_growth(file, list_growth$yield$value, 
+file = paste(index_dir, "Arginine biosynthesis.csv",sep="")
+fig3c <- plot_vs_growth(file, list_growth$yield$value, 
                                       "Complementarity 3", "Growth (Max OD)", 
-                                      "Folate biosynthesis", rows=1)
+                                      "Arginine biosynthesis", rows=1)
 
 file = paste(index_dir, "Histidine metabolism.csv",sep="")
-p4 <- plot_vs_growth(file, list_growth$yield$value, 
+fig3d <- plot_vs_growth(file, list_growth$yield$value, 
                                       "Complementarity 3", "Growth (Max OD)", 
                                       "Histidine metabolism", rows=1)
 
@@ -46,31 +46,29 @@ p_legend <- plot_vs_growth(file, list_growth$rate$value,
 ## PUT IT ALL TOGETHER
 legend <- get_legend(
   # create some space to the left of the legend
-  p_legend + theme(legend.box.margin = margin(0, 0, 0, 12))
+  p_legend + theme(legend.box.margin = margin(-5, 0, 0, 12),
+                   legend.direction='vertical',
+                   legend.box='vertical')
 )
 
 
 # 9x7 *0.8 = 7.2x5.6
 prow <- plot_grid(
-  p1 + theme(#axis.text.x = element_blank(),
-                                                 # axis.ticks.x = element_blank(),
-                                   axis.title.x = element_blank() ,
-                                   plot.title = element_text(hjust = 0.5)),
-                  p2 + theme(axis.text.y = element_blank(),
-                               axis.ticks.y = element_blank(),
-                               axis.title.y = element_blank() ,
-                              # axis.text.x = element_blank(),
-                              # axis.ticks.x = element_blank(),
-                              axis.title.x = element_blank() ,
-                             plot.title = element_text(hjust = 0.5)), 
-                  p3 + theme(plot.title = element_text(hjust = 0.5)), 
-                  p4+ theme(axis.text.y = element_blank(),
-                                               axis.ticks.y = element_blank(),
-                                               axis.title.y = element_blank() ,
-                                                # axis.ticks.y = element_blank(),
-                            plot.title = element_text(hjust = 0.5)),
-                  labels = c("A", "B", "C", "D"),#, "E", "F", "G", "H"),
-                  ncol = 2, nrow = 2)
+  fig3a + theme(axis.title.x = element_text(colour="white") ,
+                plot.title = element_text(hjust = 0.5)),
+  fig3b + theme(axis.text.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.y = element_blank() ,
+                axis.title.x = element_text(colour="white") ,
+                plot.title = element_text(hjust = 0.5)), 
+  fig3c + theme(plot.title = element_text(hjust = 0.5)), 
+  fig3d+ theme(axis.text.y = element_blank(),
+                axis.ticks.y = element_blank(),
+                axis.title.y = element_blank() ,
+                plot.title = element_text(hjust = 0.5)),
+  labels = c("A", "B", "C", "D"),
+  scale=c(.9,.9,.9,.9),
+  ncol = 2, nrow = 2)
 
-plot_grid(prow, legend, rel_widths = c(3, 1))
+plot_grid(prow, legend, rel_widths = c(4, 1))
 # save 
