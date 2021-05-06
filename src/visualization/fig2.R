@@ -68,13 +68,13 @@ h2d<-h2d + theme(plot.margin = margin(2.6,.8,1.4,.8, "cm"))
 
 
 # All together
-# Save 7x7
+# Save 7.9x7
 cowplot::plot_grid(
                 grab2a,
                 grab2b,
                 grab2c,
                 h2d,
                 labels = c("A", "B", "C", "D"),
-                scale=c(.95, .95, .95, 1.2),
+                scale=c(.9, .9, .9, 1.2),
                 align = "hv")
 

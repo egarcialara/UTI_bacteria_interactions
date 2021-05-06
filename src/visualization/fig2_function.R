@@ -43,7 +43,7 @@ make_fig2 <- function(file, source_dir, title){
   # (columns)
   text_list_2 = list(
     text1 = "Ent", text2="St", text3="Ps",
-    text4="Pm", text5="KECS", text6="Ecoli")
+    text4="Pm", text5=" KECS", text6="Ecoli")
   ha2 = columnAnnotation(
     foo2 = anno_empty(border = FALSE, 
                      height = max_text_height(unlist(text_list_2)) 
