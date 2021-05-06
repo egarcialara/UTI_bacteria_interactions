@@ -12,7 +12,7 @@ def create_similarity_2():
 
     '''
     similarity 2
-    (D intersection A) / (D union A) - aka Jacquard index
+    (D intersection A) / A
     '''
 
      # read csv
@@ -34,12 +34,12 @@ def create_similarity_2():
             set1.remove(0)
             # j = acceptor
             for j, set2 in enumerate(df_KOs["<lambda>"]):
-                
+
                 # calculate actual index
                 try:
-                    df_interaction.iloc[i,j] = len(set1 & set2) / len(set1 | set2)
+                    df_interaction.iloc[i,j] = len(set1 & set2) / len(set1)
                 except:
-                    df_interaction.iloc[i,j] = len(set1 & set2) # avoid division by 0                    
+                    df_interaction.iloc[i,j] = len(set1 & set2) # avoid division by 0
 
         # Normalize by pathway length
         df_interaction = df_interaction / KO_binary_matrix.shape[1]

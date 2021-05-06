@@ -4,3 +4,5 @@ from .complementarity_3 import create_complementarity_3
 from .complementarity_4 import create_complementarity_4
 from .similarity_1 import create_similarity_1
 from .similarity_2 import create_similarity_2
+from .similarity_3 import create_similarity_3
+from .similarity_4 import create_similarity_4
