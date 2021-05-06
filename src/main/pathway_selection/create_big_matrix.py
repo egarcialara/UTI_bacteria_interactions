@@ -20,7 +20,7 @@ def big_matrix_create():
 
 
     # For every interaction table
-    for item in ['complementarity_1', 'complementarity_2', 'complementaroty_3',
+    for item in ['complementarity_1', 'complementarity_2', 'complementarity_3',
                  'complementarity_4', 'similarity_1', 'similarity_2']:
         all_dir = glob.glob(interaction_matrix_directory+item+"/*.csv")
         big_matrix = pd.DataFrame()
@@ -41,7 +41,7 @@ def big_matrix_create():
             df_labels = df_growth.copy()
             df_labels[df_growth > growth_threshold] = 1
             df_labels[df_growth <= growth_threshold] = 0
-            df_labels = df_labels.iloc[0:66, 0:66]
+            df_labels = df_labels.iloc[0:67, 0:67]
             df_labels.index = df_InteractionPathway.columns.tolist()
             df_labels.columns = df_InteractionPathway.columns.tolist()
 

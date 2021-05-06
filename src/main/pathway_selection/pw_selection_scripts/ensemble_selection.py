@@ -4,13 +4,13 @@ import glob
 import os
 
 
-source_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
+source_directory_ranked_pathways = '../../created/pathway_selection/ranked_highStd/'
 all_dir = glob.glob(source_directory_ranked_pathways+ "*.csv" )
 
-saving_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
-saving_directory_selected_pathways = '../../created/pathway_selection/selected/'
+saving_directory_ranked_pathways = '../../created/pathway_selection/ranked_highStd/'
+saving_directory_selected_pathways = '../../created/pathway_selection/selected_highStd/'
 
-all_dir.remove(source_directory_ranked_pathways+'ranked_ensemble.csv') #just in case
+# all_dir.remove(source_directory_ranked_pathways+'ranked_ensemble.csv') #just in case
 
 def call_ensemble():
 

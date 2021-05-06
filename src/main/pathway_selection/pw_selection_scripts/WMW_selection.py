@@ -8,8 +8,16 @@ from scipy.stats import mannwhitneyu
 bigmatrices_directory =  '../../created/big_matrices/'
 all_dir = glob.glob(bigmatrices_directory+ "*.csv" )
 
-saving_directory_selected_pathways = '../../created/pathway_selection/selected/'
-saving_directory_ranked_pathways = '../../created/pathway_selection/ranked/'
+saving_directory_selected_pathways = '../../created/pathway_selection/selected_highStd/'
+saving_directory_ranked_pathways = '../../created/pathway_selection/ranked_highStd/'
+saving_directory_coef_pathways = '../../created/pathway_selection/estimator_highStd/'
+
+file = "../../extra/high_std_pw_new.csv"
+df_file = pd.read_csv(file, sep=",")
+df_file.columns = ["pw", "std"]
+list_pws = df_file.pw.tolist()
+for i in range(len(list_pws)):
+    list_pws[i] = list_pws[i].replace("/", "-")
 
 
 def call_WMW():
@@ -24,9 +32,15 @@ def call_WMW():
 
         # Get X (matrix with data) and y (column with labels).
         df_X = df_Xy.loc[:, df_Xy.columns != 'y']
+        df_X = df_X[list_pws] # NEW!!!
 
         # Perform the MWU test per column
-        results = df_X.apply(lambda d: mannwhitneyu(d[df_Xy.y == 0], d[df_Xy.y == 1]), axis=0)
+        try:
+            results = df_X.apply(lambda d: mannwhitneyu(d[df_Xy.y == 0], d[df_Xy.y == 1]), axis=0)
+        except:
+            results = pd.DataFrame(index=range(2),columns=range(df_X.shape[1]))
+            results.columns = df_X.columns
+
         df_temp = pd.DataFrame({
             'pathways': df_X.columns.tolist(),
             'pvalues': [x for x in results.values[1]]})
@@ -47,6 +61,11 @@ def call_WMW():
                 pd.DataFrame({name_measure: df_temp.iloc[:min(20, len(df_X.columns)), 0]})],
                 axis=1)
 
+            df_coef_WMW = pd.concat([
+                df_coef_WMW,
+                pd.DataFrame({name_measure: df_temp['pvalues']})],
+                axis=1)
+
         else:
             df_ranked_WMW = pd.DataFrame({
                 'pathways': df_temp['pathways'].tolist(),
@@ -54,6 +73,10 @@ def call_WMW():
 
             df_selected_WMW = pd.DataFrame({
                 name_measure: df_temp.iloc[:min(20, len(df_X.columns)), 0]})
+
+            df_coef_WMW = pd.DataFrame({
+                "pathway": df_X.columns,
+                name_measure: df_temp['pvalues']})
 
     # Save
     df_ranked_WMW = df_ranked_WMW.sort_values(by=df_ranked_WMW.columns[1])
@@ -66,8 +89,12 @@ def call_WMW():
         os.makedirs(saving_directory_ranked_pathways)
     if not os.path.exists(saving_directory_selected_pathways):
         os.makedirs(saving_directory_selected_pathways)
+    if not os.path.exists(saving_directory_coef_pathways):
+            os.makedirs(saving_directory_coef_pathways)
 
     df_ranked_WMW.to_csv(saving_directory_ranked_pathways+'ranked_WMW.csv',
                             header=True, index=False)
     df_selected_WMW.to_csv(saving_directory_selected_pathways+'selected_WMW.csv',
                             header=True, index=False)
+    df_coef_WMW.to_csv(saving_directory_coef_pathways+'estimator_WMW.csv',
+                          header=True, index=False)
