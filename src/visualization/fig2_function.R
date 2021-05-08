@@ -55,7 +55,7 @@ make_fig2 <- function(file, source_dir, title){
           row_split = factor(df2$Name, levels = rev(c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli"))),
           column_split = factor(df2$Name, levels = c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli")),
           row_gap = unit(0,"mm"), column_gap=unit(0,"mm"),
-          right_annotation = ha,
+          left_annotation = ha,
           bottom_annotation = ha2,
           col=col_fun,
           row_order = rev(list_order_rows),
@@ -63,7 +63,13 @@ make_fig2 <- function(file, source_dir, title){
           show_row_names = FALSE, show_column_names = FALSE,
           show_row_dend = FALSE, show_column_dend = FALSE,
           column_title = title, row_title=NULL,
-          show_heatmap_legend=FALSE,
+          show_heatmap_legend=TRUE,
+          heatmap_legend_param = list(
+            title = "",
+            at = c(0, max(df)),
+            labels=c(0, round(max(df),digits=2)),
+            legend_height=unit(20,"mm")
+            ),
           column_title_gp = gpar(fontsize = 11)
           )
   
@@ -75,11 +81,11 @@ make_fig2 <- function(file, source_dir, title){
     for(i in 1:6) {
       # (rows)
       decorate_annotation("foo", slice = i, {
-        grid.rect(x = 0, width = unit(1.5, "mm"), 
+        grid.rect(x = 1, width = unit(1.5, "mm"), 
                   gp = gpar(fill = col2[i], col = NA),
-                  just = "left")
+                  just = "right")
         grid.text(paste(text_list[[i]], collapse = "\n"), 
-                  x = unit(2, "mm"), just = "left",
+                  x = unit(8, "mm"), just = "right",
                   gp=gpar(fontsize=9))
       })
       # (columns)
@@ -96,7 +102,7 @@ make_fig2 <- function(file, source_dir, title){
   
     # Plot + add annotations in the plot  
     hhh <- draw(hh, row_title="Donor", column_title = "Acceptor",
-         column_title_side="bottom", row_title_side="right",
+         column_title_side="bottom", row_title_side="left",
          column_title_gp = gpar(fontsize = 10),
          row_title_gp = gpar(fontsize = 10))
 
