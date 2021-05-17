@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import os
 
-files_dir = "temp/KO_binary_matrices"
+files_dir = "temp/KO_binary_matrices_modules"
 files_binary = glob.glob(files_dir+"/*.csv")
 saving_dir_general = "temp"
 saving_dir = saving_dir_general + "/complementarity_3"
@@ -12,12 +12,11 @@ def create_complementarity_3():
 
     '''
     complementarity 3
-     ((D union A) - (D intersection A)) / A (symmetric difference)
+     ((D union A) - (D intersection A)) / A
     '''
 
     # read csv
     for f in files_binary:
-        if f!="temp/KO_binary_matrices/all.csv": continue
 
         KO_binary_matrix = pd.read_csv(f, index_col=0, header=0)
 
@@ -40,7 +39,7 @@ def create_complementarity_3():
         # i = donor
         for i, set1 in enumerate(df_KOs["<lambda>"]):
 
-            set1.remove(0)
+            #set1.remove(0)
             # j = acceptor
             for j, set2 in enumerate(df_KOs["<lambda>"]):
                 
@@ -48,7 +47,7 @@ def create_complementarity_3():
                 try:
                     df_interaction.iloc[i,j] = len(set1 ^ set2) / len(set2)
                 except:
-                    df_interaction.iloc[i,j] = len(set1 ^ set2) # avoid division by 0                    
+                    df_interaction.iloc[i,j] = len(set1 ^ set2)  # avoid division by 0
 
         # Normalize by pathway length
         df_interaction = df_interaction / KO_binary_matrix.shape[1]
