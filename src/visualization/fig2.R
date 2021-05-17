@@ -64,17 +64,19 @@ h2d <- h2d + theme(
         legend.title=element_text(size=8.5), 
         legend.text=element_text(size=8.5))
 
-h2d<-h2d + theme(plot.margin = margin(2.6,.8,1.4,.8, "cm"))
+h2d<-h2d + theme(plot.margin = margin(t = 1.4, r = 0, b = 0.3, l = 1.1, "cm"),
+                 legend.margin=margin(0,0,0,0),
+                 legend.box.margin=margin(-10,-10,-10,-10))
 
 
 # All together
-# Save 7x7
+# Save 7.9x7
 cowplot::plot_grid(
                 grab2a,
                 grab2b,
                 grab2c,
                 h2d,
                 labels = c("A", "B", "C", "D"),
-                scale=c(.95, .95, .95, 1.2),
+                scale=c(.95, .95, .95, .95),
                 align = "hv")
 

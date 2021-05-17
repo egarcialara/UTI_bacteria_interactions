@@ -45,7 +45,9 @@ p_legend <- plot_vs_growth(file, list_growth$rate$value,
 ## PUT IT ALL TOGETHER
 legend <- get_legend(
   # create some space to the left of the legend
-  p_legend + theme(legend.box.margin = margin(0, 0, 0, 12))
+  p_legend + theme(legend.box.margin = margin(-5, 0, 0, 12),
+                   legend.direction='vertical',
+                   legend.box='vertical')
 )
 
 

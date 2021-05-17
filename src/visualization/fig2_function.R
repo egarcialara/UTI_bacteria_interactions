@@ -74,6 +74,7 @@ make_fig2 <- function(file, source_dir, title){
                 ),
                 column_title_gp = gpar(fontsize = 11)
   )
+
   
   # Annotations of groups
   add_annotations_fig2 <- function(){
