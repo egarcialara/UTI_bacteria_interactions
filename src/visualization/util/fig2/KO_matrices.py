@@ -9,7 +9,7 @@ def get_list_ko(ID, source):
     if source == "module":
         url = str("http://rest.kegg.jp/link/ko/" + ID)
         try:
-            data = urlopen(url, timeout=20).read()
+            data = urlopen(url, timeout=50).read()
         except ValueError:
             print("Error retrieving module IDs")
             pass
@@ -37,7 +37,6 @@ def create_binary_matrix(strain, strain_name, ko_in_path, pwname):
     df_strain_kos = pd.read_csv(inp, names=['pid', 'ko'], sep='\t', header=None)
     df_strain_kos.dropna(inplace=True)
     df_strain_kos.drop_duplicates(subset ="ko", keep = 'first', inplace = True)
-
     # add to matrix, keeping indices from KOs in pathway
     df_kos_binary = df_strain_kos.join(ko_in_path.set_index("ko"), how="right", on="ko").reset_index(drop=True)
     # if ko was there, 1, otherwise, 0

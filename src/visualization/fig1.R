@@ -8,12 +8,11 @@ library(ggplot2)
 
 # Fig1a
 file_1a = "all.csv"
-source_1a = "~/Documents/GitHub/UTI_bacteria_interactions/src/visualization/util/fig2/temp/KO_binary_matrices/"
+source_1a = "~/Documents/GitHub/UTI_bacteria_interactions/src/visualization/util/fig2/temp/KO_binary_matrices_all/"
 return_1a <- make_KO_binary_plots_colourized(file_1a, source_1a)
 hm_1a <- return_1a$hh
 func_1a <- return_1a$function_add_annotations
-# fig_1a <-  grid.grabExpr(draw(hm_1a))
-#
+
 grid.newpage()
 pushViewport(viewport(layout.pos.row = 1, layout.pos.col = 1))
 draw(hm_1a)
@@ -53,9 +52,9 @@ plot_lgd <- df_lgd %>% ggplot()+
   geom_point(aes(x=Group, y=Category,
              shape=Category,
              fill= pval), size=3)+
-  scale_fill_gradientn(colours=c("blue", "red"), breaks=c(0.05, 0.25,0.50,0.75),
+  scale_fill_gradientn(colours=c("darkblue", "lightblue"), breaks=c(0.05, 0.25,0.50,0.75),
               limits=c(0.05,max(list_1c$df_plot$pval)), 
-              oob = scales::censor, na.value="darkblue")+
+              oob = scales::censor, na.value="black")+
   scale_colour_manual(values=col)+
   theme_minimal()+
   theme(legend.box='horizontal',legend.position="right")+
@@ -72,13 +71,8 @@ lgd <- cowplot::get_legend(plot_lgd)
 # Save 9x7 (inches, portrait) X0.7 = 630x490
 saving_dir = "~/Documents/GitHub/UTI_bacteria_interactions/figures/"
 saving_format = ".pdf"
-# pdf(paste(saving_dir,"fig1", saving_format, sep=""))
-# png(paste(saving_dir,"fig1", ".png", sep=""))
-cowplot::plot_grid(grab1a, fig1b, fig_1c, lgd,
+cowplot::plot_grid(grab1a, fig_1b, fig_1c, lgd,
           labels = c("A", "B", "C", NA),
-          scale=c(0.9, 0.8, 0.9, 0.5), # not
+          scale=c(0.9, 0.8, 0.9, 0.5),
           align = "v")
-# func_1a() # - if you want annotations, please modify fig1a script too!
-
-# Save (part 2)
-# dev.off()
+dev.off()

@@ -10,8 +10,9 @@ library(circlize)
 make_fig2 <- function(file, source_dir, title){
   
   # Data
-  df = read.csv(paste(source_dir,file,sep=""), header=TRUE, row.names=1)
-
+  df = read.csv(paste(source_dir,file,sep=""), header=TRUE, row.names=1)%>%
+    select(-MM.45) %>% filter(!rownames(.)%in%c("MM.45", "MM"))
+  
   # Colour
   col_fun = colorRamp2(c(min(df), max(df)), c("white", "black"))
   
@@ -19,7 +20,8 @@ make_fig2 <- function(file, source_dir, title){
   df2 <- df %>%
     mutate(labels = rownames(df)) %>%
     separate(labels, c("Name"), sep="[.]", remove=TRUE, extra="drop")
-
+    
+  
   # Order
   h_order <- Heatmap(as.matrix(df), 
                      row_split = df2$Name,
@@ -46,32 +48,33 @@ make_fig2 <- function(file, source_dir, title){
     text4="Pm", text5=" KECS", text6="Ecoli")
   ha2 = columnAnnotation(
     foo2 = anno_empty(border = FALSE, 
-                     height = max_text_height(unlist(text_list_2)) 
-                     + unit(2.5, "mm")
-                     )) 
+                      height = max_text_height(unlist(text_list_2)) 
+                      + unit(2.5, "mm")
+    )) 
   
   # Plot
   hh <- Heatmap(as.matrix(df),
-          row_split = factor(df2$Name, levels = rev(c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli"))),
-          column_split = factor(df2$Name, levels = c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli")),
-          row_gap = unit(0,"mm"), column_gap=unit(0,"mm"),
-          left_annotation = ha,
-          bottom_annotation = ha2,
-          col=col_fun,
-          row_order = rev(list_order_rows),
-          column_order = list_order_rows,
-          show_row_names = FALSE, show_column_names = FALSE,
-          show_row_dend = FALSE, show_column_dend = FALSE,
-          column_title = title, row_title=NULL,
-          show_heatmap_legend=TRUE,
-          heatmap_legend_param = list(
-            title = "",
-            at = c(0, max(df)),
-            labels=c(0, round(max(df),digits=2)),
-            legend_height=unit(20,"mm")
-            ),
-          column_title_gp = gpar(fontsize = 11)
-          )
+                row_split = factor(df2$Name, levels = rev(c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli"))),
+                column_split = factor(df2$Name, levels = c("Ent", "St", "Ps", "Pm", "KECS", "Ecoli")),
+                row_gap = unit(0,"mm"), column_gap=unit(0,"mm"),
+                left_annotation = ha,
+                bottom_annotation = ha2,
+                col=col_fun,
+                row_order = rev(list_order_rows),
+                column_order = list_order_rows,
+                show_row_names = FALSE, show_column_names = FALSE,
+                show_row_dend = FALSE, show_column_dend = FALSE,
+                column_title = title, row_title=NULL,
+                show_heatmap_legend=TRUE,
+                heatmap_legend_param = list(
+                  title = "",
+                  at = c(0, max(df)),
+                  labels=c(0, round(max(df),digits=3)),
+                  legend_height=unit(20,"mm")
+                ),
+                column_title_gp = gpar(fontsize = 11)
+  )
+
   
   # Annotations of groups
   add_annotations_fig2 <- function(){
@@ -97,19 +100,19 @@ make_fig2 <- function(file, source_dir, title){
                   y = 0, just = "centre",
                   gp=gpar(fontsize=9))
       })
-      }
+    }
   }
   
-    # Plot + add annotations in the plot  
-    hhh <- draw(hh, row_title="Donor", column_title = "Acceptor",
-         column_title_side="bottom", row_title_side="left",
-         column_title_gp = gpar(fontsize = 10),
-         row_title_gp = gpar(fontsize = 10))
-
-    return_list = list(hm = hhh, func=add_annotations_fig2)
-    return(return_list)
-}
+  # Plot + add annotations in the plot  
+  hhh <- draw(hh, row_title="Donor", column_title = "Acceptor",
+              column_title_side="bottom", row_title_side="left",
+              column_title_gp = gpar(fontsize = 10),
+              row_title_gp = gpar(fontsize = 10))
   
+  return_list = list(hm = hhh, func=add_annotations_fig2)
+  return(return_list)
+}
+
 # # To run  
 # source_dir = "~/Documents/GitHub/UTI_bacteria_interactions/created/interaction_matrices/complementarity_3/"
 # file = "Glutathione metabolism.csv"
@@ -118,6 +121,5 @@ make_fig2 <- function(file, source_dir, title){
 # h1 <- grid.grabExpr(draw(h1))
 # funct <- results_fig2$func
 # funct()
-
 
 

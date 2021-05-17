@@ -20,7 +20,7 @@ def big_matrix_create():
 
 
     # For every interaction table
-    for item in ['complementarity_1', 'complementarity_2', 'complementaroty_3',
+    for item in ['complementarity_1', 'complementarity_2', 'complementarity_3',
                  'complementarity_4', 'similarity_1', 'similarity_2']:
         all_dir = glob.glob(interaction_matrix_directory+item+"/*.csv")
         big_matrix = pd.DataFrame()
@@ -39,11 +39,15 @@ def big_matrix_create():
             # Read growth
             df_growth = pd.read_csv(growth_matrix_directory, index_col=0)
             df_labels = df_growth.copy()
-            df_labels[df_growth > growth_threshold] = 1
-            df_labels[df_growth <= growth_threshold] = 0
-            df_labels = df_labels.iloc[0:66, 0:66]
-            df_labels.index = df_InteractionPathway.columns.tolist()
-            df_labels.columns = df_InteractionPathway.columns.tolist()
+
+            # Group + attach 0/1 depending on threshold
+            df_labels.replace([np.inf, -np.inf], np.nan, inplace=True)
+            df_labels = df_labels.groupby(df_labels.index).mean()
+            df_labels = df_labels.groupby(df_labels.columns.str[0:2], axis=1).mean()
+            df_labels.drop('MM').drop('MM', axis=1)
+            df_labels[df_labels > growth_threshold] = 1
+            df_labels[df_labels <= growth_threshold] = 0
+            df_labels.columns = df_labels.index.tolist()
 
             # For every row (i = donor)
             for i in df_InteractionPathway.index:
@@ -56,11 +60,8 @@ def big_matrix_create():
 
                     if first:
                         big_matrix.loc[name_row, "y"] = (
-                                                    df_labels.loc[i, j])
+                            df_labels.loc[i.split('.')[0], j.split('.')[0]])
             first = False
-
-        big_matrix = big_matrix.replace(np.inf, np.nan)
-        big_matrix = big_matrix.replace(-np.inf, np.nan)
 
         if not os.path.exists(saving_directory): os.makedirs(saving_directory)
         big_matrix.to_csv(saving_directory +item+ '.csv')
