@@ -12,7 +12,7 @@ def create_complementarity_3():
 
     '''
     complementarity 3
-     ((D union A) - (D intersection A)) / A (symmetric difference)
+     ((D union A) - (D intersection A)) / A
     '''
 
     # read csv
