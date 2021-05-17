@@ -9,6 +9,7 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
   df = read.csv(paste(source_dir,file,sep=""), header=TRUE, row.names=1)
   pathway_name = substr(file, 1, (nchar(file)-4))
   
+  df <- df%>%filter(!rownames(df)=="MM.45")
   
   # Groups 
   df2 <- df %>%

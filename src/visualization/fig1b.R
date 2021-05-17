@@ -16,7 +16,8 @@ make_fig1b <- function(source_file, legend){
     rename(
       n_annotations = `# entries annotated by KO terms`,
       perc_annotations = `% entries annotated by KO terms`
-    )
+    ) %>%
+    mutate(n_annotations=n_annotations/perc_annotations*100)
   
   # Group values (mean and st. dev)
   df_summary <- df %>%
@@ -77,4 +78,3 @@ make_fig1b <- function(source_file, legend){
 # source_dir = paste(getwd(), "/extra/excel_UTI_strains/", sep="")
 # source_file <- paste(source_dir, "List_bacteria_UTI.xls", sep="")
 # fig_1b <- make_fig1b(file_1b, legend=FALSE)
-

@@ -75,11 +75,13 @@ make_fig1c <- function(growth_rate_file, growth_yield_file, legend){
         group_by(groups) %>%
         summarize(across(everything(), mean, na.rm=TRUE))
       colnames(df3) <- c("Groups", df2$groups)
+      df3 <- df3 %>% select(-MM) %>% filter(!Groups=="MM")
       
       # correlation
       v <- unlist(df3[names_sel])
       v_rate <- unlist(df_rate3[names_sel])
       v_yield <- unlist(df_yield3[names_sel])
+      
       cor_rate <- cor.test(v, v_rate, method="pearson")
       cor_yield <- cor.test(v, v_yield, method="pearson")
       list_cor_rate <- c(list_cor_rate, cor(v, v_rate, method="pearson"))
@@ -110,9 +112,9 @@ make_fig1c <- function(growth_rate_file, growth_yield_file, legend){
     geom_point(aes(x=values_rate, y=values_yield, colour=pval),size=1)+
     geom_abline(colour="gray", linetype = "dashed")+
     lims(x=c(-0.7, 0.7), y=c(-0.7, 0.7))+
-    scale_colour_gradientn(colours=c("blue", "red"), breaks=c(0.05, 0.25,0.50,0.75),
+    scale_colour_gradientn(colours=c("darkblue", "lightblue"), breaks=c(0.05, 0.25,0.50,0.75),
                            limits=c(0.05,max(df_plot$pval)),
-                           oob = scales::censor, na.value="darkblue")+
+                           oob = scales::censor, na.value="black")+
     theme_minimal()+
     labs(x="Correlation 'compl 3'\nvs growth rate",
          y="Correlation 'compl 3'\nvs growth yield",

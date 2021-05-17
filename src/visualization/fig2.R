@@ -37,7 +37,7 @@ grab2b <- grid.grab()
 
 
 # Fig 2c - all pathways
-source_dir_2c = "~/Documents/GitHub/UTI_bacteria_interactions/src/visualization/util/fig2/temp/complementarity_3/"
+source_dir_2c = "~/Documents/GitHub/UTI_bacteria_interactions/src/visualization/util/fig2/temp/complementarity_3_all/"
 file_2c = "all.csv"
 title_2c = "\nAll KOs"
 results_fig2c <- make_fig2(file_2c, source_dir_2c, title_2c)
@@ -57,7 +57,7 @@ growth_dir <- paste(getwd(), "/created/growth/", sep="")
 growth_yield_file <- paste(growth_dir, "MaxOD_3.csv", sep="")
 index_pathways = paste(getwd(), "/created/interaction_matrices/complementarity_3/", sep="")
 index_modules = paste(getwd(), "/src/visualization/util/fig2/temp/complementarity_3/", sep="")
-index_all = paste(getwd(), "/src/visualization/util/fig2/temp/complementarity_3/all/", sep="")
+index_all = paste(getwd(), "/src/visualization/util/fig2/temp/complementarity_3_all/", sep="")
 h2d <- run_together(growth_dir, growth_yield_file, index_pathways, index_modules, index_all)
 
 h2d <- h2d + theme(
