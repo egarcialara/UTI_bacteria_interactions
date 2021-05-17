@@ -6,13 +6,13 @@ import os
 files_dir = "../../created/KO_binary_matrices"
 files_binary = glob.glob(files_dir+"/*.csv")
 saving_dir_general = "../../created/interaction_matrices"
-saving_dir = saving_dir_general + "/similarity_1"
+saving_dir = saving_dir_general + "/similarity_3"
 
-def create_similarity_1():
+def create_similarity_3():
 
     '''
-    similarity 1
-     (D intersection A)
+    similarity 3
+    (D intersection A) / (D union A) - aka Jacquard index
     '''
 
     # read csv
@@ -20,8 +20,8 @@ def create_similarity_1():
         KO_binary_matrix = pd.read_csv(f, index_col=0, header=0)
 
         # Empty target dataframe
-        df_interaction = pd.DataFrame(np.nan, index=KO_binary_matrix.index, 
-                                              columns=KO_binary_matrix.index)
+        df_interaction = pd.DataFrame(np.nan, index=KO_binary_matrix.index,
+                                      columns=KO_binary_matrix.index)
 
         # Aggregate the binary table into a set of KOs per row (i.e. per strain)
         df_KOs = KO_binary_matrix.copy()
@@ -36,11 +36,14 @@ def create_similarity_1():
             for j, set2 in enumerate(df_KOs["<lambda>"]):
 
                 # calculate actual index
-                df_interaction.iloc[i,j] = len(set1 & set2)
+                try:
+                    df_interaction.iloc[i,j] = len(set1 & set2) / len(set1 | set2)
+                except:
+                    df_interaction.iloc[i,j] = len(set1 & set2)  # avoid division by 0
 
         # Normalize by pathway length
         df_interaction = df_interaction / KO_binary_matrix.shape[1]
- 
+
         # Save table
         if not os.path.exists(saving_dir): os.makedirs(saving_dir)
         name_pw = f[(len(files_dir)+1):-4]

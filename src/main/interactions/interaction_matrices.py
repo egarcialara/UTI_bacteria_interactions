@@ -5,6 +5,8 @@ from interactions.each_interaction.complementarity_4 import create_complementari
 
 from interactions.each_interaction.similarity_1 import create_similarity_1
 from interactions.each_interaction.similarity_2 import create_similarity_2
+from interactions.each_interaction.similarity_3 import create_similarity_3
+from interactions.each_interaction.similarity_4 import create_similarity_4
 
 def create_interaction_matrices():
 
@@ -17,3 +19,5 @@ def create_interaction_matrices():
     # Similarities
     create_similarity_1()
     create_similarity_2()
+    create_similarity_3()
+    create_similarity_4()

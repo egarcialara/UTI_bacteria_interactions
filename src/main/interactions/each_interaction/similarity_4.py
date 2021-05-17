@@ -6,13 +6,13 @@ import os
 files_dir = "../../created/KO_binary_matrices"
 files_binary = glob.glob(files_dir+"/*.csv")
 saving_dir_general = "../../created/interaction_matrices"
-saving_dir = saving_dir_general + "/similarity_1"
+saving_dir = saving_dir_general + "/similarity_4"
 
-def create_similarity_1():
+def create_similarity_4():
 
     '''
-    similarity 1
-     (D intersection A)
+    similarity 2
+    Pearson correlation (A, D)
     '''
 
     # read csv
@@ -20,8 +20,8 @@ def create_similarity_1():
         KO_binary_matrix = pd.read_csv(f, index_col=0, header=0)
 
         # Empty target dataframe
-        df_interaction = pd.DataFrame(np.nan, index=KO_binary_matrix.index, 
-                                              columns=KO_binary_matrix.index)
+        df_interaction = pd.DataFrame(np.nan, index=KO_binary_matrix.index,
+                                      columns=KO_binary_matrix.index)
 
         # Aggregate the binary table into a set of KOs per row (i.e. per strain)
         df_KOs = KO_binary_matrix.copy()
@@ -32,15 +32,25 @@ def create_similarity_1():
         # i = donor
         for i, set1 in enumerate(df_KOs["<lambda>"]):
             set1.remove(0)
+            list1 = pd.DataFrame({"index":list(set1), "one":list(set1)})
             # j = acceptor
             for j, set2 in enumerate(df_KOs["<lambda>"]):
+                list2 = pd.DataFrame({"index":list(set2), "two":list(set2)})
+                try:
+                    df_kos = pd.merge(list1, list2, how="outer", on="index")
+                except:
+                    df_kos = pd.concat([list1, list2])
 
                 # calculate actual index
-                df_interaction.iloc[i,j] = len(set1 & set2)
+                try:
+                    value = df_kos.corr(method='pearson').loc['one', 'two']
+                    df_interaction.iloc[i,j] = max(value, 0)  # avoid nan
+                except:
+                    df_interaction.iloc[i,j] = 0
 
         # Normalize by pathway length
         df_interaction = df_interaction / KO_binary_matrix.shape[1]
- 
+
         # Save table
         if not os.path.exists(saving_dir): os.makedirs(saving_dir)
         name_pw = f[(len(files_dir)+1):-4]
