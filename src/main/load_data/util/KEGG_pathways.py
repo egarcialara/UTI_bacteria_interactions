@@ -14,7 +14,7 @@ def get_list_ko(line):
     # ko = 'ko' + pwid
     url = str("http://rest.kegg.jp/link/ko/map" + pwid)
     try:
-        data = urlopen(url, timeout=20).read()
+        data = urlopen(url, timeout=50).read()
     except ValueError:
         print("Error retrieving pathway IDs")
         pass
