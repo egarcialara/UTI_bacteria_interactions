@@ -55,28 +55,26 @@ grab2c <- grid.grab()
 # Fig 2d - density plot
 growth_dir <- paste(getwd(), "/created/growth/", sep="")
 growth_yield_file <- paste(growth_dir, "MaxOD_3.csv", sep="")
+growth_rate_file <- paste(growth_dir, "GR_3.csv", sep="")
 index_pathways = paste(getwd(), "/created/interaction_matrices/complementarity_3/", sep="")
 index_modules = paste(getwd(), "/src/visualization/util/fig2/temp/complementarity_3/", sep="")
 index_all = paste(getwd(), "/src/visualization/util/fig2/temp/complementarity_3_all/", sep="")
 h2d <- run_together(growth_dir, growth_yield_file, index_pathways, index_modules, index_all)
 
 h2d <- h2d + theme(
-        legend.title=element_text(size=8.5), 
-        legend.text=element_text(size=8.5))
+  legend.title=element_text(size=8.5),
+  legend.text=element_text(size=8.5))
 
-h2d<-h2d + theme(plot.margin = margin(t = 1.4, r = 0, b = 0.3, l = 1.1, "cm"),
-                 legend.margin=margin(0,0,0,0),
-                 legend.box.margin=margin(-10,-10,-10,-10))
+h2d<-h2d + theme(plot.margin = margin(2.6,.8,1.4,.8, "cm"))
 
 
 # All together
-# Save 7.9x7
+# Save 7x7
 cowplot::plot_grid(
-                grab2a,
-                grab2b,
-                grab2c,
-                h2d,
-                labels = c("A", "B", "C", "D"),
-                scale=c(.95, .95, .95, .95),
-                align = "hv")
-
+  grab2a,
+  grab2b,
+  grab2c,
+  h2d,
+  labels = c("A", "B", "C", "D"),
+  scale=c(.95, .95, .95, 1.2),
+  align = "hv")
