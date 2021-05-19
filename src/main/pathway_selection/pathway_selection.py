@@ -5,12 +5,7 @@ from pathway_selection.pw_selection_scripts.ensemble_selection import call_ensem
 
 
 def call_selections():
-    print(1)
     call_SVM()
-    # exit()
-    print(2)
     call_Boruta()
-    print(3)
     call_WMW()
-    print(4)
-    # call_ensemble()
+    call_ensemble()

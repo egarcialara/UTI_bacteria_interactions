@@ -2,17 +2,16 @@ import pandas as pd
 import numpy as np
 import os
 import glob
-from sklearn.feature_selection import RFE
 from sklearn.svm import SVR
 
+name_measure = "complementarity_3"
 
 bigmatrices_directory = '../../created/big_matrices/'
-all_dir = glob.glob(bigmatrices_directory+"complementarity_3.csv")
+all_dir = glob.glob(bigmatrices_directory+name_measure+".csv")
 
-saving_directory_selected_pathways = '../../created/pathway_selection/selected_highStd/'
-saving_directory_ranked_pathways = '../../created/pathway_selection/ranked_highStd/'
-saving_directory_coef_pathways = '../../created/pathway_selection/estimator_highStd/'
+saving_directory = '../../created/pathway_selection/' + name_measure + "/"
 
+# Pathways with information
 file = "../../extra/high_std_pw_new.csv"
 df_file = pd.read_csv(file, sep=",")
 df_file.columns = ["pw", "std"]
@@ -26,24 +25,17 @@ def call_SVM():
     for file_path in sorted(all_dir):
         df_Xy = pd.read_csv(file_path, index_col=0)
         df_Xy = df_Xy.fillna(0)
-        name_measure = file_path[len(bigmatrices_directory):-4]
 
-        # -----------------------------------------------------------------
-        # print(df_Xy.loc[df_Xy.index.str.split("x").str[1].str[:2]=="St",] )
-        # exit()
-        # df_Xy.loc[df_Xy.index.str.split("x").str[1]=="St",] = np.nan
-        #df_Xy = df_Xy.loc[df_Xy.index.str.split("x").str[1]!="St",]
-        # ------------------------------------------------------------------
+        # Only Ent
+        df_Xy = df_Xy.loc[df_Xy.index.str.split("x").str[1]!="St",]
 
         # Get X (matrix with data) and y (column with labels).
         df_X = df_Xy.loc[:, df_Xy.columns != 'y']
-        df_X = df_X[list_pws] # NEW!!!
+        df_X = df_X[list_pws]
         df_y = df_Xy['y']
 
         # Perform SVM
-        # NOT---and RFE (Recursive Feature Elimination)---
         estimator = SVR(kernel="linear")
-
         # selector = RFE(estimator, step=1, verbose=0)
         try:
             estimator = estimator.fit(df_X, df_y)
@@ -51,54 +43,16 @@ def call_SVM():
             print('Error in ' + file_path)
             continue
 
-        # Get Ranked+Selected pathways into DataFrames
-        if 'df_coef_SVM' in locals():
-            # df_ranked_temp = pd.DataFrame({
-            #     'pathways': df_X.columns.tolist(),
-            #     name_measure: selector.ranking_})
-            # df_ranked_SVM = pd.merge(df_ranked_SVM, df_ranked_temp, how="outer", on="pathways")
-            #
-            # df_selected_SVM = pd.concat([
-            #     df_selected_SVM,
-            #     pd.DataFrame({name_measure: df_X.columns[selector.support_==True]})],
-            #     axis=1)
-
-            df_coef_SVM = pd.concat([
-                df_coef_SVM,
-                pd.DataFrame({name_measure: estimator.coef_[0]})],
-                axis=1)
-
-        else:
-            # df_ranked_SVM = pd.DataFrame({
-            #     'pathways': df_X.columns.tolist(),
-            #     name_measure: selector.ranking_})
-            #
-            # df_selected_SVM = pd.DataFrame({
-            #     name_measure: df_X.columns[selector.support_==True]})
-
-            df_coef_SVM = pd.DataFrame({
-                "pathway": df_X.columns,
-                name_measure: estimator.coef_[0]})
+        # Put results in data frame
+        df_temp = pd.DataFrame({
+            'pathways': df_X.columns.tolist(),
+            'SVM_coef': [x for x in estimator.coef_[0]]})
+        df_temp = df_temp.sort_values(by='SVM_coef', ascending=False)
+        df_temp = df_temp.reset_index(drop=True)
+        df_temp['SVM_rank'] = np.arange(1, len(df_temp) + 1)
 
   
     # Save
-    # df_ranked_SVM = df_ranked_SVM.sort_values(by=df_ranked_SVM.columns[1])
-    # df_selected_SVM = pd.DataFrame(
-    #     np.sort(df_selected_SVM.values, axis=0),
-    #     index=df_selected_SVM.index, columns=df_selected_SVM.columns)
-
-
-    # if not os.path.exists(saving_directory_ranked_pathways):
-    #     os.makedirs(saving_directory_ranked_pathways)
-    # if not os.path.exists(saving_directory_selected_pathways):
-    #     os.makedirs(saving_directory_selected_pathways)
-    if not os.path.exists(saving_directory_coef_pathways):
-        os.makedirs(saving_directory_coef_pathways)
-
-    # df_ranked_SVM.to_csv(saving_directory_ranked_pathways+'ranked_SVM.csv',
-    #                         header=True, index=False)
-    # df_selected_SVM.to_csv(saving_directory_selected_pathways+'selected_SVM.csv',
-    #                         header=True, index=False)
-    df_coef_SVM.to_csv(saving_directory_coef_pathways+'estimator_SVM_2.csv',
-                       header=True, index=False)
-                       
+    if not os.path.exists(saving_directory):
+        os.makedirs(saving_directory)
+    df_temp.to_csv(saving_directory+'SVM.csv', header=True, index=False)
