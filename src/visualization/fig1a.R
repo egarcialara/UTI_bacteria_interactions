@@ -62,7 +62,7 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
           show_row_names = FALSE, show_column_names = FALSE,
           show_row_dend = FALSE, show_column_dend = FALSE,
           col=col,
-          column_title = "KOs",
+          column_title = "KEGG Orthologs",
           column_title_side='bottom',
           row_title="Strains",
           show_heatmap_legend=FALSE,
