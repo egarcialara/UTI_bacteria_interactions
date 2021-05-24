@@ -33,5 +33,12 @@ Scatter plots for an interaction index and a growth measure.
 - How to: Make sure `fig3_function.R` is in the same folder.
 - Then: run `fig3.R`. Edit file names and directories as needed.
 
+__Fig. 4__
+
+Map of a pathway, to visualize the KEGG orthologs in order. It is built for Histidine metabolism, but it can be customized.
+
+- How to: run `fig4.R`
+
+
 ### Requirements
 Common R packages only. The list of packages used are listed at the top of each script.
