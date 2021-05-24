@@ -8,10 +8,7 @@ name_measure = "complementarity_3"
 source_directory = '../../created/pathway_selection/' + name_measure + "/"
 all_dir = glob.glob(source_directory+ "*.csv" )
 
-# saving_directory_ranked_pathways = '../../created/pathway_selection/ranked_highStd/'
 saving_directory = '../../created/pathway_selection/' + name_measure + "/"
-
-# all_dir.remove(source_directory_ranked_pathways+'ranked_ensemble.csv') #just in case
 
 def call_ensemble():
 
