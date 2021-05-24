@@ -12,7 +12,7 @@ all_dir = glob.glob(bigmatrices_directory+name_measure+".csv")
 saving_directory = '../../created/pathway_selection/' + name_measure + "/"
 
 # Pathways with information
-file = "../../extra/high_std_pw_new.csv"
+file = "../../data/extra/high_std_pw_new.csv"
 df_file = pd.read_csv(file, sep=",")
 df_file.columns = ["pw", "std"]
 list_pws = df_file.pw.tolist()

@@ -13,7 +13,7 @@ growth_matrix_directory = '../../created/growth/MaxOD_3.csv'
 saving_directory = '../../created/pathway_selection/' + name_measure + "/"
 
 # Pathways with information
-file = "../../extra/high_std_pw_new.csv"
+file = "../../data/extra/high_std_pw_new.csv"
 df_file = pd.read_csv(file, sep=",")
 df_file.columns = ["pw", "std"]
 list_pws = df_file.pw.tolist()
