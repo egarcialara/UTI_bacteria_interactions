@@ -37,7 +37,7 @@ __Fig. 4__
 
 Map of a pathway, to visualize the KEGG orthologs in order. It is built for Histidine metabolism, but it can be customized.
 
-- How to: run `fig4.R`
+- How to: run `fig4.R`. You can find the required files in `/util/fig4/histidine/`.
 
 
 ### Requirements
