@@ -29,7 +29,7 @@ and all pathways in the Y-axis. The cells contain the relevant interaction value
     a different selection strategy would improve your results, it is easy to remove/add a new method.
 
 __To create the figures__, call the different scripts in `src/visualization/`.
-Before running most of them, make sure that you have the required tables derived from running certain 
+Before running them, make sure that you have the required tables derived from running certain 
 steps from the main pipeline. 
 
 ### Requirements
