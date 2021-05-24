@@ -1,4 +1,3 @@
-# import urllib2
 from urllib.request import urlopen
 
 def get_list_ko(line):
