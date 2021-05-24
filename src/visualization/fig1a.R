@@ -66,7 +66,7 @@ make_KO_binary_plots_colourized <- function(file, source_dir){
           column_title_side='bottom',
           row_title="Strains",
           show_heatmap_legend=FALSE,
-          column_title_gp = gpar(fontsize = 15),
+          column_title_gp = gpar(fontsize = 12),
           row_title_gp = gpar(fontsize = 1)
           )
   
