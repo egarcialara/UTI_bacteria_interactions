@@ -1,16 +1,14 @@
-# [TITLE?] Using functional annotations to study pairwise interactions in a bacterial community
-
-_Note: this text is a draft. Any edits/feedback is welcome._
+# Using functional annotations to study pairwise interactions in a bacterial community
 
 ### Goal
 It is a Python tool for a quick _in silico_ exploratory analysis of metabolic interactions in
-microbial communities.
+microbial communities. This code is built to study Urinary Tract Infection, but can be easily customized.
 
 In particular, it performs a series of steps:
 
-- build indices of complementarity and competition, based on metabolic gene annotations
-- compare these indices with the actual experimentally-derived growth data (correlation)
-- rough selection of pathways that can distinguish the best between no/increase of growth
+- build indices of complementarity and competition, based on metabolic gene annotations (KEGG orthologs).
+- compare these indices with the actual experimentally-derived growth data.
+- rough selection of pathways that can distinguish the best between (lack of) increase of growth.
 
 ### Structure
 The repository has 2 main initial folders: `src` and `data`. It also includes additional folders
@@ -40,4 +38,4 @@ The requirements for this repository are listed in `requirements.txt`.
 They can easily be installed using e.g. pip: `pip install -r requirements.txt`.
 
 ### Other
-The code is part of a publication that can be found here(link).
+The code is part of a publication that can be found here (link).
