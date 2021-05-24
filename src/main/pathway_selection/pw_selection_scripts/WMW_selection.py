@@ -8,7 +8,6 @@ name_measure = "complementarity_3"
 
 bigmatrices_directory = '../../created/big_matrices/'
 all_dir = glob.glob(bigmatrices_directory+name_measure+".csv")
-growth_matrix_directory = '../../created/growth/MaxOD_3.csv'
 
 saving_directory = '../../created/pathway_selection/' + name_measure + "/"
 
