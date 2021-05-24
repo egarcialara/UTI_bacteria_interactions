@@ -2,6 +2,7 @@ import pandas as pd
 import glob
 import numpy as np
 import scipy.io as sio
+import os
 
 
 growth_matrices_directory = "../../data/growth_matrices/"
