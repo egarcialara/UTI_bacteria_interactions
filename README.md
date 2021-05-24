@@ -14,6 +14,8 @@ In particular, it performs a series of steps:
 The repository has 2 main initial folders: `src` and `data`. It also includes additional folders
 that will contain the resulting tables (`created`) and figures (`figures`).
 
+The pipeline is coded in Python, whereas the figures are created in R.
+
 ### How to run it
 
 __To run the pipeline__, call `src/main/main.py`.
@@ -30,7 +32,7 @@ and all pathways in the Y-axis. The cells contain the relevant interaction value
 
 __To create the figures__, call the different scripts in `src/visualization/`.
 Before running most of them, make sure that you have the required tables derived from running certain 
-steps from the main pipeline.
+steps from the main pipeline. 
 
 ### Requirements
 
