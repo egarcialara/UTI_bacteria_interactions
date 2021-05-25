@@ -11,13 +11,13 @@ from interactions.each_interaction.similarity_4 import create_similarity_4
 def create_interaction_matrices():
 
     # Complementarities
-    create_complementarity_1()
-    create_complementarity_2()
+    # create_complementarity_1()
+    # create_complementarity_2()
     create_complementarity_3()
-    create_complementarity_4()
+    # create_complementarity_4()
 
     # Similarities
-    create_similarity_1()
-    create_similarity_2()
-    create_similarity_3()
-    create_similarity_4()
+    # create_similarity_1()
+    # create_similarity_2()
+    # create_similarity_3()
+    # create_similarity_4()
