@@ -5,7 +5,7 @@ from pathway_selection.pw_selection_scripts.ensemble_selection import call_ensem
 
 
 def call_selections():
-    call_SVM()
-    call_Boruta()
+    # call_SVM()
+    # call_Boruta()
     call_WMW()
-    call_ensemble()
+    # call_ensemble()  # requires running the three above
