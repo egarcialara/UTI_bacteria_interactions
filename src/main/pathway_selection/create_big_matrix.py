@@ -20,8 +20,9 @@ def big_matrix_create():
 
 
     # For every interaction table
-    for item in ['complementarity_1', 'complementarity_2', 'complementarity_3',
-                 'complementarity_4', 'similarity_1', 'similarity_2']:
+    for item in ["complementarity_3"]:
+                # ['complementarity_1', 'complementarity_2', 'complementarity_3',
+                # 'complementarity_4', 'similarity_1', 'similarity_2']:
         all_dir = glob.glob(interaction_matrix_directory+item+"/*.csv")
         big_matrix = pd.DataFrame()
 
