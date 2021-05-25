@@ -9,20 +9,23 @@ def main():
     ''' Call the different functions '''
 
     # Load data
-    print("--------------------------------")
-    print("Creating KO binary matrices  ...", "\n")
+    print("--------------------------------------")
+    print("(1/5) Creating KO binary matrices  ...", "\n")
     create_KOs_binary_matrix()
+    print("--------------------------------------")
+    print("(2/5) Reding the growth data       ...", "\n")
     mat_to_pandas()
 
     # Interaction tables
-    print("--------------------------------")
-    print("Creating interaction matrices...", "\n")
+    print("--------------------------------------")
+    print("(3/5) Creating interaction matrices...", "\n")
     create_interaction_matrices()
 
     # Pathway selection
-    print("--------------------------------")
-    print("Pathway selection            ...", "\n")
+    print("--------------------------------------")
+    print("(4/5) Pathway selection tables     ...", "\n")
     big_matrix_create()
+    print("(5/5) Pathway selection            ...", "\n")
     call_selections()
 
 
